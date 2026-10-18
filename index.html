@@ -2,42 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Nap-Time Marathon</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="55-week nap-time marathon training plan">
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#F3F6F7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0E171C" media="(prefers-color-scheme: dark)">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0E171C">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Marathon">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Nap-Time Marathon</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap">
 <style>
-/* Layout: a race-bib header, then one column of week "cards" grouped by phase, current week highlighted */
+/* Layout: a race-bib header, then one column of week "cards" grouped by phase, each workout tickable, current week highlighted */
 :root{
   --bg:#F3F6F7; --surface:#FFFFFF; --ink:#14232B; --muted:#5B6B73; --line:#DCE4E7;
   --accent:#1F5FE0; --accent-ink:#FFFFFF;
   --p1:#2E9C83; --p2:#D9822B; --p3:#C2415B; --p4:#6B5BD6;
-  --done:#E8F3EF;
+  --done:#E8F3EF; --done-ink:#2E7D63;
   --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0E171C; --surface:#16232A; --ink:#E6EEF1; --muted:#93A4AC; --line:#26363E;
   --accent:#6E9BFF; --accent-ink:#0E171C;
-  --p1:#4CC3A6; --p2:#F0A257; --p3:#EE6F88; --p4:#9D90F2; --done:#17302A; color-scheme:dark}}
+  --p1:#4CC3A6; --p2:#F0A257; --p3:#EE6F88; --p4:#9D90F2; --done:#17302A; --done-ink:#6FD3B4; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0E171C; --surface:#16232A; --ink:#E6EEF1; --muted:#93A4AC; --line:#26363E;
   --accent:#6E9BFF; --accent-ink:#0E171C;
-  --p1:#4CC3A6; --p2:#F0A257; --p3:#EE6F88; --p4:#9D90F2; --done:#17302A; color-scheme:dark}
+  --p1:#4CC3A6; --p2:#F0A257; --p3:#EE6F88; --p4:#9D90F2; --done:#17302A; --done-ink:#6FD3B4; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:calc(48px + env(safe-area-inset-bottom,0px))}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
 .wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
 .bib{background:var(--ink);color:var(--bg);border-radius:14px;padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px}
 .bib .eyebrow{font-family:var(--display);letter-spacing:.14em;text-transform:uppercase;font-size:13px;opacity:.75}
@@ -48,7 +44,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15p
 .bar{height:6px;border-radius:3px;background:color-mix(in srgb,var(--bg) 25%,transparent);overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent);width:0}
 .jump{align-self:flex-start;font:600 14px var(--body);background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:8px 16px;cursor:pointer}
-.jump:focus-visible,.check:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.jump:focus-visible,.check:focus-within,.wo:focus-within{outline:2px solid var(--accent);outline-offset:2px}
 .rules{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .rules h2{font-family:var(--display);font-size:18px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px}
 .rules ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
@@ -66,19 +62,30 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15p
 .tag.post{border-color:var(--accent);color:var(--accent)}
 .tag.now{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .tag.easy{border-color:var(--pc);color:var(--pc)}
-.check{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer}
+.check{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;font-variant-numeric:tabular-nums}
 .check input{width:20px;height:20px;accent-color:var(--accent)}
-.rows{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
-.rows dt{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding-top:2px;white-space:nowrap}
-.rows dd{margin:0;min-width:0}
-.rows dd.long{font-weight:600}
+.week.is-done .check{color:var(--done-ink);font-weight:600}
+.wos{display:flex;flex-direction:column;gap:6px}
+.wo{display:flex;flex-direction:column;gap:4px}
+.wo-head{display:grid;grid-template-columns:22px 86px 1fr;align-items:start;gap:10px;padding:3px 2px;border-radius:6px;cursor:pointer;font-size:14px}
+.wo-head:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.wo-head input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--pc)}
+.wo .lbl{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding-top:2px}
+.wo .txt{min-width:0}
+.wo.long .txt{font-weight:600}
+.wo.rest .wo-head{cursor:default}
+.wo:has(.wo-head input:checked) .txt{text-decoration:line-through;color:var(--muted)}
+.wo-note{margin-left:32px;width:calc(100% - 32px);min-height:34px;field-sizing:content;resize:vertical;
+  font:14px/1.4 var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.wo-note::placeholder{color:var(--muted);opacity:.8}
+.wo-note:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.wo-note:not(:placeholder-shown){border-color:color-mix(in srgb,var(--pc) 45%,var(--line))}
+.save-state{font-size:12px;color:var(--muted);margin:0}
 .note{font-size:13px;color:var(--muted);margin:0}
 .race .wk-num{color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-html{-webkit-text-size-adjust:100%}
-body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
-.week{scroll-margin-top:calc(16px + env(safe-area-inset-top,0px))}
 </style>
+
 </head>
 <body>
 <div class="wrap">
@@ -87,11 +94,13 @@ body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
     <h1>55 weeks of nap-time training</h1>
     <div class="stats">
       <div class="stat"><b id="sNow">–</b><span>This week</span></div>
+      <div class="stat"><b id="sWo">0</b><span>Workouts done</span></div>
       <div class="stat"><b id="sDone">0</b><span>Weeks done</span></div>
       <div class="stat"><b id="sDays">–</b><span>Days to go</span></div>
     </div>
     <div class="bar" aria-hidden="true"><i id="prog"></i></div>
     <button class="jump" id="jump" type="button">Jump to this week</button>
+    <p class="save-state" id="saveState" style="color:inherit;opacity:.7">Loading your log…</p>
   </header>
 
   <section class="rules">
@@ -103,12 +112,13 @@ body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
       <li><b>Easy</b> = you can chat. Missed a nap run? Let it go, don't double up.</li>
       <li>Something hurts for 2+ runs → take 3 days off.</li>
       <li><b>Post X/50</b> shows your social series week (starts Nov 23).</li>
+      <li><b>Tick each workout</b> as you do it. The week ticks itself when all are done.</li>
+      <li><b>Write what you did</b> in the box under each workout (e.g. 30 min treadmill, 5.1 km · 3 × 10 push-ups). Compare weeks to see your progress.</li>
     </ul>
   </section>
 
   <main id="plan"></main>
 </div>
-
 
 <script>
 (function(){
@@ -162,6 +172,17 @@ weeks.push({n:53,ph:4,r1:'40 min with 15 min at marathon pace',r2:'35 min easy',
 weeks.push({n:54,ph:4,r1:'35 min with 10 min at marathon pace',r2:'30 min easy',long:'14 km easy',gym:'Rest',note:'Fly to New York this week or next. Keep legs fresh.'});
 weeks.push({n:55,ph:4,r1:'Tue: 30 min easy + 4 strides',r2:'Thu: 20 min easy',long:'RACE DAY · Sun 7 Nov · 42.2 km',gym:'Rest',note:'Start slower than you want to. Enjoy every borough.',race:true});
 
+// Build the list of tickable workouts for each week
+weeks.forEach(w=>{
+  const items=[{k:'r1',lbl:'Nap run 1',txt:w.r1},{k:'r2',lbl:'Nap run 2',txt:w.r2},{k:'long',lbl:'Long run',txt:w.long,long:true}];
+  const m=/^(\d+)\s*×\s*(.*)$/.exec(w.gym);
+  if(m){
+    const c=+m[1];
+    for(let g=1;g<=c;g++) items.push({k:'g'+g,lbl:c>1?`Gym ${g}`:'Gym',txt:m[2]});
+  }
+  w.items=items; w.rest=!m;
+});
+
 const phases={
   1:{name:'Rebuild',sub:'Weeks 1–19 · 19 Oct – 28 Feb · easy running, strength, habit',c:'var(--p1)'},
   2:{name:'Build',sub:'Weeks 20–36 · 1 Mar – 27 Jun · longer weekend runs, one faster nap run',c:'var(--p2)'},
@@ -169,15 +190,30 @@ const phases={
   4:{name:'Taper & race',sub:'Weeks 53–55 · 18 Oct – 7 Nov · less running, fresh legs',c:'var(--p4)'}
 };
 
-let done={};
-try{done=JSON.parse(localStorage.getItem('ntm-done')||'{}')||{}}catch(e){done={}}
-const save=()=>{try{localStorage.setItem('ntm-done',JSON.stringify(done))}catch(e){}};
+// State: {"w12":{"r1":{"done":true,"note":"30 min treadmill"},...}}
+const LKEY='ntm-log';
+let state={};
+try{state=JSON.parse(localStorage.getItem(LKEY)||'null')||null}catch(e){state=null}
+if(!state){
+  state={};
+  try{ // carry over ticks from earlier versions of this page
+    const wo=JSON.parse(localStorage.getItem('ntm-wo')||'{}')||{};
+    const old=JSON.parse(localStorage.getItem('ntm-done')||'{}')||{};
+    weeks.forEach(w=>w.items.forEach(it=>{
+      if(wo[w.n+'-'+it.k]||old[w.n]) ((state['w'+w.n]??={})[it.k]={done:true,note:''});
+    }));
+  }catch(e){}
+}
+const saveLocal=()=>{try{localStorage.setItem(LKEY,JSON.stringify(state))}catch(e){}};
+const get=(n,k)=>(state['w'+n]||{})[k]||{done:false,note:''};
+const put=(n,k,patch)=>{const wk=(state['w'+n]??={}); wk[k]={...get(n,k),...patch};};
 
-const now=Date.now();
 const today=Date.UTC(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
 let curWeek=Math.floor((today-START)/DAY/7)+1;
 const plan=document.getElementById('plan');
-const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const wkCount=w=>w.items.filter(it=>get(w.n,it.k).done).length;
+const hint=it=>it.k[0]==='g'?'e.g. 3 × 10 squats, 10 push-ups, 30 s plank':it.k==='long'?'e.g. 45 min, 6.8 km, felt strong':'e.g. 30 min treadmill, 4.5 km';
 
 let html='';
 [1,2,3,4].forEach(p=>{
@@ -187,47 +223,122 @@ let html='';
     const s=START+(w.n-1)*7*DAY, e=s+6*DAY;
     const post=w.n>=6?`<span class="tag post">Post ${w.n-5}/50</span>`:'';
     const isNow=w.n===curWeek;
-    html+=`<article class="week${isNow?' now':''}${w.race?' race':''}${done[w.n]?' is-done':''}" id="w${w.n}">
+    const rows=w.items.map(it=>{
+      const key=w.n+'-'+it.k;
+      return `<div class="wo${it.long?' long':''}"><label class="wo-head"><input type="checkbox" id="c${key}" data-w="${w.n}" data-k="${it.k}"><span class="lbl">${it.lbl}</span><span class="txt">${esc(it.txt)}</span></label>
+        <textarea class="wo-note" id="t${key}" data-w="${w.n}" data-k="${it.k}" rows="1" maxlength="400" placeholder="${hint(it)}" aria-label="What you did: week ${w.n}, ${it.lbl}"></textarea></div>`;
+    }).join('') + (w.rest?`<div class="wo rest"><div class="wo-head"><span></span><span class="lbl">Gym</span><span class="txt">Rest</span></div></div>`:'');
+    html+=`<article class="week${isNow?' now':''}${w.race?' race':''}" id="w${w.n}">
       <div class="wk-top"><span class="wk-num">Wk ${w.n}</span><span class="wk-date">${fmt(s)} – ${fmt(e)}</span>
       ${isNow?'<span class="tag now">This week</span>':''}${w.cut?'<span class="tag easy">Easier week</span>':''}${post}
-      <label class="check"><input type="checkbox" id="c${w.n}" data-w="${w.n}" ${done[w.n]?'checked':''}> Done</label></div>
-      <dl class="rows"><dt>Nap run 1</dt><dd>${esc(w.r1)}</dd><dt>Nap run 2</dt><dd>${esc(w.r2)}</dd>
-      <dt>Long run</dt><dd class="long">${esc(w.long)}</dd><dt>Gym</dt><dd>${esc(w.gym)}</dd></dl>
+      <label class="check"><span id="n${w.n}">0/${w.items.length}</span><input type="checkbox" id="c${w.n}" data-week="${w.n}" aria-label="Whole week ${w.n} done"> Week done</label></div>
+      <div class="wos">${rows}</div>
       ${w.note?`<p class="note">${esc(w.note)}</p>`:''}</article>`;
   });
   html+='</section>';
 });
 plan.innerHTML=html;
 
-function stats(){
-  const n=Object.values(done).filter(Boolean).length;
-  document.getElementById('sDone').textContent=n;
-  document.getElementById('prog').style.width=(n/55*100)+'%';
+const dirty=new Set(); // notes typed but not yet saved: "12-r1"
+function paintWeek(n){
+  const w=weeks[n-1];
+  w.items.forEach(it=>{
+    const v=get(n,it.k), key=n+'-'+it.k;
+    document.getElementById('c'+key).checked=!!v.done;
+    const ta=document.getElementById('t'+key);
+    if(document.activeElement!==ta && !dirty.has(key) && ta.value!==(v.note||'')) ta.value=v.note||'';
+  });
+  const cnt=wkCount(w), all=cnt===w.items.length;
+  document.getElementById('n'+n).textContent=`${cnt}/${w.items.length}`;
+  const box=document.getElementById('c'+n);
+  box.checked=all; box.indeterminate=cnt>0&&!all;
+  document.getElementById('w'+n).classList.toggle('is-done',all);
 }
+function stats(){
+  let wo=0,total=0,wk=0;
+  weeks.forEach(w=>{const c=wkCount(w); wo+=c; total+=w.items.length; if(c===w.items.length) wk++;});
+  document.getElementById('sWo').textContent=wo;
+  document.getElementById('sDone').textContent=wk;
+  document.getElementById('prog').style.width=(wo/total*100)+'%';
+}
+function paintAll(){weeks.forEach(w=>paintWeek(w.n)); stats();}
 document.getElementById('sNow').textContent=curWeek<1?'Pre':curWeek>55?'Done':curWeek+'/55';
 document.getElementById('sDays').textContent=Math.max(0,Math.ceil((RACE-today)/DAY));
-stats();
+paintAll();
+
+// Saving: the page's own storage (any device) when available, this browser as a backup
+const saveEl=document.getElementById('saveState');
+let db=null;
+const chains={};
+function remoteSave(n){
+  if(!db) return;
+  const body=JSON.parse(JSON.stringify(state['w'+n]||{}));
+  chains[n]=(chains[n]||Promise.resolve()).then(()=>db.doc('log/w'+n).set(body)).then(
+    ()=>{saveEl.textContent='Saved · works on any device you sign in on';},
+    e=>{saveEl.textContent=e&&e.code==='quota_exceeded'?'Storage is full. Your latest change is saved on this device only.':'Could not save online just now. Saved on this device.';});
+}
+function commit(n){saveLocal(); stats(); paintWeek(n); remoteSave(n);}
+
 plan.addEventListener('change',ev=>{
-  const t=ev.target; if(!t.dataset.w) return;
-  done[t.dataset.w]=t.checked; save(); stats();
-  t.closest('.week').classList.toggle('is-done',t.checked);
+  const t=ev.target;
+  if(t.matches('.wo-head input')){
+    put(+t.dataset.w,t.dataset.k,{done:t.checked}); commit(+t.dataset.w);
+  }else if(t.dataset.week){
+    const n=+t.dataset.week;
+    weeks[n-1].items.forEach(it=>put(n,it.k,{done:t.checked}));
+    commit(n);
+  }
 });
+const timers={};
+function flushNote(ta){
+  const n=+ta.dataset.w, k=ta.dataset.k, key=n+'-'+k;
+  clearTimeout(timers[key]);
+  if(!dirty.has(key)) return;
+  dirty.delete(key);
+  if((get(n,k).note||'')===ta.value) return;
+  put(n,k,{note:ta.value}); saveLocal(); remoteSave(n);
+}
+plan.addEventListener('input',ev=>{
+  const ta=ev.target; if(!ta.matches('.wo-note')) return;
+  const key=ta.dataset.w+'-'+ta.dataset.k;
+  dirty.add(key); clearTimeout(timers[key]);
+  timers[key]=setTimeout(()=>flushNote(ta),900);
+});
+plan.addEventListener('focusout',ev=>{ if(ev.target.matches('.wo-note')) flushNote(ev.target); });
+
+(async()=>{
+  try{ db=window.claude?.use ? await window.claude.use('db') : null; }catch(e){ db=null; }
+  if(!db){ saveEl.textContent='Saved on this device only'; return; }
+  let first=true;
+  db.collection('log').onSnapshot(snap=>{
+    if(first && !snap.metadata.fromCache){
+      first=false;
+      if(snap.empty){ // first time online: upload what this device already has
+        Object.keys(state).forEach(id=>{const n=+id.slice(1); if(n) remoteSave(n);});
+        saveEl.textContent='Saved · works on any device you sign in on';
+        return;
+      }
+    }
+    snap.docs.forEach(d=>{
+      const n=+d.id.slice(1); if(!n||n>55) return;
+      const incoming=d.data()||{}, merged={};
+      weeks[n-1].items.forEach(it=>{
+        const key=n+'-'+it.k, inc=incoming[it.k];
+        if(!inc){ return; }
+        merged[it.k]={done:!!inc.done,note:dirty.has(key)?get(n,it.k).note:String(inc.note||'')};
+      });
+      state['w'+n]=merged;
+      paintWeek(n);
+    });
+    saveLocal(); stats();
+    if(!snap.metadata.fromCache) saveEl.textContent='Saved · works on any device you sign in on';
+  },()=>{ saveEl.textContent='Saved on this device only'; db=null; });
+})();
+
 document.getElementById('jump').addEventListener('click',()=>{
   const el=document.getElementById('w'+Math.min(55,Math.max(1,curWeek)));
   if(el) el.scrollIntoView({block:'start'});
 });
-
-
-// --- App extras ---
-// Refresh "this week" when the app is reopened on a new day
-const openedOn=new Date().toDateString();
-document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible' && new Date().toDateString()!==openedOn) location.reload();
-});
-// Offline support
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-}
 })();
 </script>
 </body>
